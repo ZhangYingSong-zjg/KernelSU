@@ -259,6 +259,13 @@ static int __nocfi my_setprocattr(const char *name, void *value, size_t size)
                                                      &sid, &error);
         if (error2 || error)
             return error2 ?: error;
+    } else if (size > 1 && str) {
+        /* Timing symmetry: payloads skipped above still go through the same
+           policy parser, result discarded. External behaviour unchanged. */
+        u32 dummy_sid = 0;
+        int dummy_err = 0;
+        (void)security_context_to_sid_with_policy(backup_sepolicy, value, size, &tmp_sid,
+                                                  SECSID_NULL, GFP_KERNEL, &dummy_sid, &dummy_err);
     }
 
     new = prepare_creds();

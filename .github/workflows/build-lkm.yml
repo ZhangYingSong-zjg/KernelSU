@@ -23,14 +23,9 @@ jobs:
     strategy:
       matrix:
         kmi:
-          - android12-5.10
-          - android13-5.10
+          # 只编这台设备需要的 KMI（kernel 5.15.180 / Android 13 KMI），
+          # 其余 KMI 编出来也用不上，白等半小时。
           - android13-5.15
-          - android14-5.15
-          - android14-6.1
-          - android15-6.6
-          - android16-6.12
-          - android17-6.18
     uses: ./.github/workflows/ddk-lkm.yml
     with:
       kmi: ${{ matrix.kmi }}
